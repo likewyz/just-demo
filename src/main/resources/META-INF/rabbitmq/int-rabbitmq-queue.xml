@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!-- rabbitmq 设置 -->
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="${spring.rabbitmq.host}"
+                               username="${spring.rabbitmq.username}" password="${spring.rabbitmq.password}"/>
+    <rabbit:template id="amqpTemplate" connection-factory="rabbitConnectionFactory"/>
+    <rabbit:admin connection-factory="rabbitConnectionFactory"/>
+
+    <rabbit:queue name="message.transfer.queue"/>
+    <rabbit:direct-exchange name="message.exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="message.transfer.queue" key="message.transfer.queue"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+</beans>

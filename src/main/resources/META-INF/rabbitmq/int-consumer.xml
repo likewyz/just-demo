@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int-amqp="http://www.springframework.org/schema/integration/amqp"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/integration
+        http://www.springframework.org/schema/integration/spring-integration.xsd
+        http://www.springframework.org/schema/integration/amqp
+        http://www.springframework.org/schema/integration/amqp/spring-integration-amqp.xsd">
+
+
+    <int:channel id="message_receive_channel"/>
+    <int-amqp:inbound-channel-adapter channel="message_receive_channel"
+                                      error-channel="amqpAsynFailedMessageChannel"
+                                      connection-factory="rabbitConnectionFactory"
+                                      queue-names="message.transfer.queue"/>
+    <int:service-activator ref="messageActivator" method="dealMessage"
+                           input-channel="message_receive_channel"/>
+
+</beans>
