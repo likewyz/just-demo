@@ -49,7 +49,7 @@ public class FailedMessageHandler {
                         .filter(StringUtils::isNotBlank)
                         .orElse(baseException.getError().getMessage()));
         baseResponseDTO.setDetail(baseException.getLocalizedMessage());
-
+        //cc
         return FastJsonUtils.toJSONString(baseResponseDTO);
     }
 
